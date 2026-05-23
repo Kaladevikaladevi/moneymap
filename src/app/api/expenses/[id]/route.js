@@ -1,28 +1,42 @@
-import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Expense from "@/models/Expense";
+import { NextResponse } from "next/server";
+
+
 
 export async function PUT(req, { params }) {
-  const data = await req.json();
+  try {
+    await connectDB();
 
-  await connectDB();
+    const { id } = await params; // ✅ FIX HERE
 
-  const updatedExpense =
-    await Expense.findByIdAndUpdate(
-      params.id,
-      data,
-      { new: true }
+    const body = await req.json();
+
+    await Expense.findByIdAndUpdate(id, body);
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: err.message },
+      { status: 500 }
     );
-
-  return NextResponse.json(updatedExpense);
+  }
 }
 
+
 export async function DELETE(req, { params }) {
-  await connectDB();
+  try {
+    await connectDB();
 
-  await Expense.findByIdAndDelete(params.id);
+    const { id } = await params; // ✅ FIX HERE
 
-  return NextResponse.json({
-    message: "Deleted",
-  });
+    await Expense.findByIdAndDelete(id);
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: err.message },
+      { status: 500 }
+    );
+  }
 }

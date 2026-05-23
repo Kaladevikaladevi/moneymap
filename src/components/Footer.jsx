@@ -112,7 +112,7 @@ export default function Footer() {
 
               <li>
                 Email:
-                support@moneymap.com
+                services@moneymap.com
               </li>
 
               <li>
@@ -121,7 +121,7 @@ export default function Footer() {
               </li>
 
               <li>
-                Kochi, Kerala
+                Calicut, Kerala
               </li>
 
             </ul>

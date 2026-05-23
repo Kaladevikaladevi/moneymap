@@ -5,6 +5,7 @@ const ExpenseSchema = new mongoose.Schema(
     title: String,
     amount: Number,
     category: String,
+    date: String,
   },
   { timestamps: true }
 );

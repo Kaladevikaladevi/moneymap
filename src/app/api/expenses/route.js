@@ -1,20 +1,15 @@
+import connectDB from "@/lib/mongodb";
+import Expense from "@/models/Expense";
 import { NextResponse } from "next/server";
-import connectDB from "../../../lib/mongodb";
-import Expense from "../../../models/Expense";
 
 // GET ALL EXPENSES
 export async function GET() {
   try {
     await connectDB();
-
-    const expenses = await Expense.find();
-
+    const expenses = await Expense.find().sort({ createdAt: -1 });
     return NextResponse.json(expenses);
   } catch (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json([], { status: 500 });
   }
 }
 
@@ -25,12 +20,12 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const expense = await Expense.create(body);
+    const newExpense = await Expense.create(body);
 
-    return NextResponse.json(expense);
+    return NextResponse.json(newExpense);
   } catch (error) {
     return NextResponse.json(
-      { error: error.message },
+      { error: "Create failed" },
       { status: 500 }
     );
   }
