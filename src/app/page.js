@@ -1,5 +1,6 @@
-import Navbar from "@/src/components/navbar"
-import Footer from "@/src/components/footer"
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
