@@ -1,43 +1,56 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
+import LetterGlitch from "@/components/LetterGlitch";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
+    <main className="min-h-screen bg-black text-white">
       <Navbar />
 
-      {/* HERO SECTION */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-24">
+      {/* HERO */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
 
-        <h1 className="text-5xl md:text-7xl font-extrabold mb-6">
-          MoneyMap
-        </h1>
+        {/* BACKGROUND EFFECT */}
+        <div className="absolute inset-0">
+          <LetterGlitch
+            glitchSpeed={50}
+            centerVignette={true}
+            outerVignette={false}
+            smooth={true}
+          />
+        </div>
 
-        <p className="text-lg md:text-2xl text-gray-300 max-w-2xl mb-8">
-          Track your expenses, manage your money,
-          and take control of your financial life
-          with a modern and secure expense manager.
-        </p>
+        {/* CONTENT */}
+        <div className="relative z-10 text-center px-6">
 
-        <div className="flex gap-4 flex-wrap justify-center">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6">
+            MoneyMap
+          </h1>
 
-          <a
-            href="/register"
-            className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-xl text-lg font-semibold shadow-lg"
-          >
-            Get Started
-          </a>
+          <p className="text-lg md:text-2xl text-gray-300 max-w-2xl mb-8 mx-auto">
+            Track your expenses, manage your money,
+            and take control of your financial life.
+          </p>
 
-          <a
-            href="/login"
-            className="border border-white hover:bg-white hover:text-black transition px-6 py-3 rounded-xl text-lg font-semibold"
-          >
-            Login
-          </a>
+          <div className="flex gap-4 flex-wrap justify-center">
 
+            <a
+              href="/register"
+              className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-xl text-lg font-semibold"
+            >
+              Get Started
+            </a>
+
+            <a
+              href="/login"
+              className="border border-white hover:bg-white hover:text-black transition px-6 py-3 rounded-xl text-lg font-semibold"
+            >
+              Login
+            </a>
+
+          </div>
         </div>
       </section>
-
       {/* FEATURES */}
       <section className="px-6 py-20">
 
@@ -109,10 +122,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      
-       <Footer /> 
-
+      {/* <Footer /> */}
     </main>
   );
 }

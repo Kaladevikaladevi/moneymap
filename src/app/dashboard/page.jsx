@@ -4,7 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 
 import { motion } from "framer-motion";
 
@@ -334,7 +334,7 @@ export default function Dashboard() {
 
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }

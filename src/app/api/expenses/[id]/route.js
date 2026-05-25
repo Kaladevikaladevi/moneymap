@@ -1,41 +1,114 @@
 import connectDB from "@/lib/mongodb";
 import Expense from "@/models/Expense";
+
 import { NextResponse } from "next/server";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
-
+// UPDATE EXPENSE
 export async function PUT(req, { params }) {
+
   try {
+
     await connectDB();
 
-    const { id } = await params; // ✅ FIX HERE
+    const session =
+      await getServerSession(authOptions);
+
+    // NOT LOGGED IN
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { id } = params;
 
     const body = await req.json();
 
-    await Expense.findByIdAndUpdate(id, body);
+    // FIND USER EXPENSE
+    const expense =
+      await Expense.findOne({
+        _id: id,
+        userId: session.user.id,
+      });
 
-    return NextResponse.json({ success: true });
+    // NOT OWNER
+    if (!expense) {
+      return NextResponse.json(
+        { error: "Expense not found" },
+        { status: 404 }
+      );
+    }
+
+    await Expense.findByIdAndUpdate(
+      id,
+      body
+    );
+
+    return NextResponse.json({
+      success: true,
+    });
+
   } catch (err) {
+
     return NextResponse.json(
-      { success: false, error: err.message },
+      {
+        success: false,
+        error: err.message,
+      },
       { status: 500 }
     );
   }
 }
 
-
+// DELETE EXPENSE
 export async function DELETE(req, { params }) {
+
   try {
+
     await connectDB();
 
-    const { id } = await params; // ✅ FIX HERE
+    const session =
+      await getServerSession(authOptions);
 
-    await Expense.findByIdAndDelete(id);
+    // NOT LOGGED IN
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
 
-    return NextResponse.json({ success: true });
+    const { id } = params;
+
+    // DELETE ONLY OWN EXPENSE
+    const deleted =
+      await Expense.findOneAndDelete({
+        _id: id,
+        userId: session.user.id,
+      });
+
+    if (!deleted) {
+      return NextResponse.json(
+        { error: "Expense not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+    });
+
   } catch (err) {
+
     return NextResponse.json(
-      { success: false, error: err.message },
+      {
+        success: false,
+        error: err.message,
+      },
       { status: 500 }
     );
   }

@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import connectDB from "../../../../lib/mongodb";
 import User from "../../../../models/User";
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -56,8 +56,33 @@ const handler = NextAuth({
     strategy: "jwt",
   },
 
+  callbacks: {
+
+    // SAVE USER ID IN TOKEN
+    async jwt({ token, user }) {
+
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+
+    // SEND USER ID TO SESSION
+    async session({ session, token }) {
+
+      if (session.user) {
+        session.user.id = token.id;
+      }
+
+      return session;
+    },
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export {
   handler as GET,
