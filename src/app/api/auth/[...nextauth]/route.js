@@ -1,10 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
 import bcrypt from "bcryptjs";
 
-import connectDB from "../../../../lib/mongodb";
-import User from "../../../../models/User";
+import connectDB from "@/lib/mongodb";
+import User from "@/models/User";
 
 export const authOptions = {
   providers: [
@@ -12,38 +11,49 @@ export const authOptions = {
       name: "Credentials",
 
       credentials: {
-        email: {},
-        password: {},
+        email: {
+          label: "Email",
+          type: "email",
+        },
+
+        password: {
+          label: "Password",
+          type: "password",
+        },
       },
 
       async authorize(credentials) {
-        await connectDB();
+        try {
+          await connectDB();
 
-        const user = await User.findOne({
-          email: credentials.email,
-        });
+          const user = await User.findOne({
+            email: credentials.email,
+          });
 
-        if (!user) {
-          throw new Error("User not found");
+          if (!user) {
+            throw new Error("User not found");
+          }
+
+          const isPasswordCorrect =
+            await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+
+          if (!isPasswordCorrect) {
+            throw new Error("Invalid password");
+          }
+
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          };
+        } catch (error) {
+          console.log("AUTH ERROR:", error);
+
+          throw new Error(error.message);
         }
-
-        const isPasswordCorrect =
-          await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-        if (!isPasswordCorrect) {
-          throw new Error(
-            "Invalid password"
-          );
-        }
-
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-        };
       },
     }),
   ],
@@ -57,10 +67,7 @@ export const authOptions = {
   },
 
   callbacks: {
-
-    // SAVE USER ID IN TOKEN
     async jwt({ token, user }) {
-
       if (user) {
         token.id = user.id;
       }
@@ -68,9 +75,7 @@ export const authOptions = {
       return token;
     },
 
-    // SEND USER ID TO SESSION
     async session({ session, token }) {
-
       if (session.user) {
         session.user.id = token.id;
       }
@@ -84,7 +89,4 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export {
-  handler as GET,
-  handler as POST,
-};
+export { handler as GET, handler as POST };
