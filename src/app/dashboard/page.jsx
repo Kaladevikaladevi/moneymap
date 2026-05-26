@@ -81,18 +81,32 @@ export default function Dashboard() {
     resetForm();
   };
 
-  // DELETE
-  const deleteExpense = async (id) => {
-    const res = await fetch(`/api/expenses/${id}`, {
-      method: "DELETE",
-    });
+  const handleDelete = async (id) => {
 
-    if (!res.ok) {
-      alert("Delete failed!");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this expense?"
+    );
+
+    // CANCEL
+    if (!confirmDelete) {
       return;
     }
 
-    await mutate();
+    try {
+
+      await fetch(`/api/expenses/${id}`, {
+        method: "DELETE",
+      });
+
+      mutate();
+
+      alert("Expense deleted successfully");
+
+    } catch (error) {
+
+      alert("Delete failed");
+
+    }
   };
 
   // EDIT
@@ -163,7 +177,7 @@ export default function Dashboard() {
     <main className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white px-4 py-6 md:px-12 md:py-10">
       <Navbar />
 
-     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 backdrop-blur-xl">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 backdrop-blur-xl">
 
         {/* HEADER */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
@@ -224,10 +238,27 @@ export default function Dashboard() {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">All Categories</option>
-            <option value="Travel">Travel</option>
             <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
             <option value="Shopping">Shopping</option>
             <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Health">Health</option>
+            <option value="Education">Education</option>
+            <option value="Salary">Salary</option>
+            <option value="Investment">Investment</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Transport">Transport</option>
+            <option value="Rent">Rent</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Subscriptions">Subscriptions</option>
+            <option value="Gifts">Gifts</option>
+            <option value="Savings">Savings</option>
+            <option value="Personal Care">Personal Care</option>
+            <option value="Mobile Recharge">Mobile Recharge</option>
+            <option value="Internet">Internet</option>
+            <option value="Other">Other</option>
           </select>
 
           <button
@@ -243,48 +274,142 @@ export default function Dashboard() {
         </div>
 
         {/* CHARTS */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-12">
 
           {/* PIE CHART */}
-          <div className="bg-gray-900/60 p-4 sm:p-6 rounded-2xl border border-gray-800">
-            <h2 className="text-base sm:text-lg font-semibold mb-4">
-              Category Breakdown
-            </h2>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ duration: 0.2 }}
+            className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-900/90 to-gray-950 shadow-2xl backdrop-blur-xl p-5 sm:p-7"
+          >
 
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={80}
-                  label
-                >
-                  {categoryData.map((_, index) => (
-                    <Cell key={index} fill={`hsl(${index * 60},70%,50%)`} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+            {/* glow */}
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-green-500/10 blur-3xl rounded-full" />
+
+            <div className="relative z-10">
+
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-white">
+                    Category Breakdown
+                  </h2>
+
+                  <p className="text-sm text-gray-400 mt-1">
+                    Spending by category
+                  </p>
+                </div>
+
+                <div className="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs border border-green-500/20">
+                  Analytics
+                </div>
+              </div>
+
+              <ResponsiveContainer width="100%" height={320}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={65}
+                    outerRadius={110}
+                    paddingAngle={4}
+                    labelLine={false}
+                    label={({ name, percent }) =>
+                      `${name} ${(percent * 100).toFixed(0)}%`
+                    }
+                  >
+                    {categoryData.map((_, index) => (
+                      <Cell
+                        key={index}
+                        fill={`hsl(${index * 45}, 80%, 55%)`}
+                      />
+                    ))}
+                  </Pie>
+
+                  <Tooltip
+                    contentStyle={{
+                      background: "#111827",
+                      border: "1px solid #374151",
+                      borderRadius: "16px",
+                      color: "#fff",
+                    }}
+                  />
+
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+
+            </div>
+          </motion.div>
 
           {/* BAR CHART */}
-          <div className="bg-gray-900/60 p-4 sm:p-6 rounded-2xl border border-gray-800">
-            <h2 className="text-base sm:text-lg font-semibold mb-4">
-              Monthly Expenses
-            </h2>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ duration: 0.2 }}
+            className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-900/90 to-gray-950 shadow-2xl backdrop-blur-xl p-5 sm:p-7"
+          >
 
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={monthlyData}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#22c55e" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+            {/* glow */}
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/10 blur-3xl rounded-full" />
+
+            <div className="relative z-10">
+
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-white">
+                    Monthly Expenses
+                  </h2>
+
+                  <p className="text-sm text-gray-400 mt-1">
+                    Monthly spending overview
+                  </p>
+                </div>
+
+                <div className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-xs border border-blue-500/20">
+                  Reports
+                </div>
+              </div>
+
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart
+                  data={monthlyData}
+                  barSize={40}
+                >
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fill: "#9ca3af" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+
+                  <YAxis
+                    tick={{ fill: "#9ca3af" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+
+                  <Tooltip
+                    cursor={{ fill: "rgba(255,255,255,0.05)" }}
+                    contentStyle={{
+                      background: "#111827",
+                      border: "1px solid #374151",
+                      borderRadius: "16px",
+                      color: "#fff",
+                    }}
+                  />
+
+                  <Bar
+                    dataKey="value"
+                    radius={[14, 14, 0, 0]}
+                    fill="#22c55e"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+
+            </div>
+          </motion.div>
 
         </div>
 
@@ -318,7 +443,7 @@ export default function Dashboard() {
                 </button>
 
                 <button
-                  onClick={() => deleteExpense(expense._id)}
+                  onClick={() => handleDelete(expense._id)}
                   className="flex-1 bg-red-500 hover:bg-red-600 py-2 rounded-xl text-sm"
                 >
                   Delete
@@ -330,7 +455,75 @@ export default function Dashboard() {
 
         </div>
 
-        {/* MODAL */} {open && (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"> {/* modal box */} <div className="w-[92%] max-w-md rounded-2xl bg-gray-950 border border-gray-800 shadow-2xl p-6 animate-fadeIn"> {/* header */} <div className="mb-5"> <h2 className="text-2xl font-semibold text-white"> {editId ? "Edit Expense" : "Add Expense"} </h2> <p className="text-sm text-gray-400"> Fill in the details below </p> </div> {/* form */} <div className="space-y-4"> {/* TITLE */} <div> <label className="text-xs text-gray-400">Title</label> <input name="title" placeholder="e.g. Grocery shopping" value={form.title} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" /> </div> {/* AMOUNT */} <div> <label className="text-xs text-gray-400">Amount</label> <input name="amount" type="number" placeholder="e.g. 500" value={form.amount} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" /> </div> {/* CATEGORY */} <div> <label className="text-xs text-gray-400">Category</label> <input name="category" placeholder="Food, Travel, Bills..." value={form.category} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" /> </div> </div> {/* buttons */} <div className="flex gap-3 mt-6"> <button onClick={handleSubmit} className="flex-1 bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-xl transition" > {editId ? "Update Expense" : "Add Expense"} </button> <button onClick={() => setOpen(false)} className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl transition" > Cancel </button> </div> </div> </div>)}
+        {/* MODAL */}
+        {open && (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          {/* modal box */}
+          <div className="w-[92%] max-w-md rounded-2xl bg-gray-950 border border-gray-800 shadow-2xl p-6 animate-fadeIn">
+            {/* header */}
+            <div className="mb-5"> <h2 className="text-2xl font-semibold text-white">
+              {editId ? "Edit Expense" : "Add Expense"}
+            </h2>
+              <p className="text-sm text-gray-400"> Fill in the details below </p>
+            </div>
+            {/* form */}
+            <div className="space-y-4">
+              {/* TITLE */}
+              <div>
+                <label className="text-xs text-gray-400">Title</label>
+                <input name="title" placeholder="e.g. Grocery shopping" value={form.title} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
+              </div>
+              {/* AMOUNT */}
+              <div>
+                <label className="text-xs text-gray-400">Amount</label>
+                <input name="amount" type="number" placeholder="e.g. 500" value={form.amount} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
+              </div>
+              {/* CATEGORY */}
+              <div>
+                <label className="text-xs text-gray-400">Category</label>
+
+                <select
+                  name="category"
+                  value={form.category}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                >
+                  <option value="">Select Category</option>
+
+                  <option value="Food">Food</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Health">Health</option>
+                  <option value="Education">Education</option>
+                  <option value="Salary">Salary</option>
+                  <option value="Investment">Investment</option>
+                  <option value="Groceries">Groceries</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Rent">Rent</option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Insurance">Insurance</option>
+                  <option value="Subscriptions">Subscriptions</option>
+                  <option value="Gifts">Gifts</option>
+                  <option value="Savings">Savings</option>
+                  <option value="Personal Care">Personal Care</option>
+                  <option value="Mobile Recharge">Mobile Recharge</option>
+                  <option value="Internet">Internet</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            {/* buttons */}
+            <div className="flex gap-3 mt-6">
+              <button onClick={handleSubmit} className="flex-1 bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-xl transition" >
+                {editId ? "Update Expense" : "Add Expense"}
+              </button>
+              <button onClick={() => setOpen(false)} className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl transition" >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>)}
 
       </div>
 

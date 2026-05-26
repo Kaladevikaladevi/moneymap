@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
 // UPDATE EXPENSE
-export async function PUT(req, { params }) {
+export async function PUT(req, context) {
 
   try {
 
@@ -24,7 +24,8 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const { id } = params;
+    // FIX FOR NEXT.JS 16
+    const { id } = await context.params;
 
     const body = await req.json();
 
@@ -35,7 +36,7 @@ export async function PUT(req, { params }) {
         userId: session.user.id,
       });
 
-    // NOT OWNER
+    // NOT FOUND
     if (!expense) {
       return NextResponse.json(
         { error: "Expense not found" },
@@ -43,14 +44,15 @@ export async function PUT(req, { params }) {
       );
     }
 
-    await Expense.findByIdAndUpdate(
-      id,
-      body
-    );
+    // UPDATE
+    const updatedExpense =
+      await Expense.findByIdAndUpdate(
+        id,
+        body,
+        { new: true }
+      );
 
-    return NextResponse.json({
-      success: true,
-    });
+    return NextResponse.json(updatedExpense);
 
   } catch (err) {
 
@@ -65,7 +67,7 @@ export async function PUT(req, { params }) {
 }
 
 // DELETE EXPENSE
-export async function DELETE(req, { params }) {
+export async function DELETE(req, context) {
 
   try {
 
@@ -82,16 +84,18 @@ export async function DELETE(req, { params }) {
       );
     }
 
-    const { id } = params;
+    // FIX FOR NEXT.JS 16
+    const { id } = await context.params;
 
     // DELETE ONLY OWN EXPENSE
-    const deleted =
+    const deletedExpense =
       await Expense.findOneAndDelete({
         _id: id,
         userId: session.user.id,
       });
 
-    if (!deleted) {
+    // NOT FOUND
+    if (!deletedExpense) {
       return NextResponse.json(
         { error: "Expense not found" },
         { status: 404 }

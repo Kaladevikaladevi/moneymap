@@ -108,15 +108,17 @@ export default function Home() {
         <div className="max-w-5xl mx-auto text-center">
 
           <h2 className="text-4xl font-bold mb-8">
-            Why Choose MoneyMap?
+            Smart Expense Tracking Made Simple
           </h2>
 
           <p className="text-gray-300 text-lg leading-8">
-            MoneyMap is built using modern
-            technologies like Next.js, MongoDB,
-            TailwindCSS, and SWR to provide a fast,
-            responsive, and powerful financial
-            management experience.
+            MoneyMap helps you track your daily expenses,
+            manage your budget, and understand your
+            spending habits with ease. Add, edit, and
+            organize expenses in real-time while viewing
+            beautiful charts and insights that make
+            financial management simple, fast, and
+            stress-free.
           </p>
 
         </div>

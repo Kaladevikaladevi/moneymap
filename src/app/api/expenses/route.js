@@ -11,8 +11,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const session =
-      await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
     // NOT LOGGED IN
     if (!session?.user?.id) {
@@ -22,11 +21,10 @@ export async function GET() {
       );
     }
 
-    // ONLY CURRENT USER DATA
-    const expenses =
-      await Expense.find({
-        userId: session.user.id,
-      }).sort({ createdAt: -1 });
+    // GET ONLY CURRENT USER EXPENSES
+    const expenses = await Expense.find({
+      userId: session.user.id,
+    }).sort({ createdAt: -1 });
 
     return NextResponse.json(expenses);
 
@@ -46,8 +44,7 @@ export async function POST(req) {
 
     await connectDB();
 
-    const session =
-      await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
     // NOT LOGGED IN
     if (!session?.user?.id) {
@@ -59,12 +56,11 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    // SAVE USER ID
-    const newExpense =
-      await Expense.create({
-        ...body,
-        userId: session.user.id,
-      });
+    // CREATE NEW EXPENSE
+    const newExpense = await Expense.create({
+      ...body,
+      userId: session.user.id,
+    });
 
     return NextResponse.json(newExpense);
 
