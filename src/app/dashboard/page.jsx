@@ -176,13 +176,13 @@ export default function Dashboard() {
 
     <main className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white px-4 py-6 md:px-12 md:py-10">
       <Navbar />
-<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 py-6 backdrop-blur-xl">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 py-6 backdrop-blur-xl">
 
         {/* HEADER */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-             Track Your Spending
+              Track Your Spending
             </h1>
             <p className="text-gray-400 text-sm mt-1">
               Track expenses, analyze spending, and improve your financial habits.
@@ -454,75 +454,77 @@ export default function Dashboard() {
 
         </div>
 
-        {/* MODAL */}
-        {open && (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          {/* modal box */}
-          <div className="w-[92%] max-w-md rounded-2xl bg-gray-950 border border-gray-800 shadow-2xl p-6 animate-fadeIn">
-            {/* header */}
-            <div className="mb-5"> <h2 className="text-2xl font-semibold text-white">
-              {editId ? "Edit Expense" : "Add Expense"}
-            </h2>
-              <p className="text-sm text-gray-400"> Fill in the details below </p>
-            </div>
-            {/* form */}
-            <div className="space-y-4">
-              {/* TITLE */}
-              <div>
-                <label className="text-xs text-gray-400">Title</label>
-                <input name="title" placeholder="e.g. Grocery shopping" value={form.title} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
-              </div>
-              {/* AMOUNT */}
-              <div>
-                <label className="text-xs text-gray-400">Amount</label>
-                <input name="amount" type="number" placeholder="e.g. 500" value={form.amount} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
-              </div>
-              {/* CATEGORY */}
-              <div>
-                <label className="text-xs text-gray-400">Category</label>
+       
+       {/* MODAL */}
+{open && (
+  <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 backdrop-blur-sm px-2 sm:px-4 pt-24 overflow-y-auto">
 
-                <select
-                  name="category"
-                  value={form.category}
-                  onChange={handleChange}
-                  className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-                >
-                  <option value="">Select Category</option>
+    {/* modal box */}
+    <div className="w-full max-w-md rounded-2xl bg-gray-950 border border-gray-800 shadow-2xl p-6 animate-fadeIn mb-10">  {/* header */}
+              <div className="mb-5"> <h2 className="text-2xl font-semibold text-white">
+                {editId ? "Edit Expense" : "Add Expense"}
+              </h2>
+                <p className="text-sm text-gray-400"> Fill in the details below </p>
+              </div>
+              {/* form */}
+              <div className="space-y-4">
+                {/* TITLE */}
+                <div>
+                  <label className="text-xs text-gray-400">Title</label>
+                  <input name="title" placeholder="e.g. Grocery shopping" value={form.title} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
+                </div>
+                {/* AMOUNT */}
+                <div>
+                  <label className="text-xs text-gray-400">Amount</label>
+                  <input name="amount" type="number" placeholder="e.g. 500" value={form.amount} onChange={handleChange} className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
+                </div>
+                {/* CATEGORY */}
+                <div>
+                  <label className="text-xs text-gray-400">Category</label>
 
-                  <option value="Food">Food</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Bills">Bills</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Health">Health</option>
-                  <option value="Education">Education</option>
-                  <option value="Salary">Salary</option>
-                  <option value="Investment">Investment</option>
-                  <option value="Groceries">Groceries</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Rent">Rent</option>
-                  <option value="Utilities">Utilities</option>
-                  <option value="Insurance">Insurance</option>
-                  <option value="Subscriptions">Subscriptions</option>
-                  <option value="Gifts">Gifts</option>
-                  <option value="Savings">Savings</option>
-                  <option value="Personal Care">Personal Care</option>
-                  <option value="Mobile Recharge">Mobile Recharge</option>
-                  <option value="Internet">Internet</option>
-                  <option value="Other">Other</option>
-                </select>
+                  <select
+                    name="category"
+                    value={form.category}
+                    onChange={handleChange}
+                    className="w-full mt-1 p-3 rounded-xl bg-gray-900 border border-gray-800 text-white outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                  >
+                    <option value="">Select Category</option>
+
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Health">Health</option>
+                    <option value="Education">Education</option>
+                    <option value="Salary">Salary</option>
+                    <option value="Investment">Investment</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Insurance">Insurance</option>
+                    <option value="Subscriptions">Subscriptions</option>
+                    <option value="Gifts">Gifts</option>
+                    <option value="Savings">Savings</option>
+                    <option value="Personal Care">Personal Care</option>
+                    <option value="Mobile Recharge">Mobile Recharge</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              {/* buttons */}
+              <div className="flex gap-3 mt-6">
+                <button onClick={handleSubmit} className="flex-1 bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-xl transition" >
+                  {editId ? "Update Expense" : "Add Expense"}
+                </button>
+                <button onClick={() => setOpen(false)} className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl transition" >
+                  Cancel
+                </button>
               </div>
             </div>
-            {/* buttons */}
-            <div className="flex gap-3 mt-6">
-              <button onClick={handleSubmit} className="flex-1 bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-xl transition" >
-                {editId ? "Update Expense" : "Add Expense"}
-              </button>
-              <button onClick={() => setOpen(false)} className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl transition" >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>)}
+          </div>)}
 
       </div>
 
