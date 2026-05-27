@@ -1,4 +1,5 @@
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata = {
   title: "MoneyMap",
@@ -6,16 +7,15 @@ export const metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-
 };
 
-export default function RootLayout({
-  children,
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

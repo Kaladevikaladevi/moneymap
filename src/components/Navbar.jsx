@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { signOut, useSession } from "next-auth/react";
+
 export default function Navbar() {
 
   const [menuOpen, setMenuOpen] =
     useState(false);
+
+  const { data: session } = useSession();
 
   return (
     <nav className="w-full bg-black text-white border-b border-gray-800 fixed top-0 left-0 z-50">
@@ -38,19 +42,30 @@ export default function Navbar() {
             Dashboard
           </Link>
 
-          <Link
-            href="/login"
-            className="hover:text-green-400 transition"
-          >
-            Login
-          </Link>
+          {!session ? (
+            <>
+              <Link
+                href="/login"
+                className="hover:text-green-400 transition"
+              >
+                Login
+              </Link>
 
-          <Link
-            href="/register"
-            className="bg-green-500 hover:bg-green-600 transition px-5 py-2 rounded-xl font-semibold"
-          >
-            Register
-          </Link>
+              <Link
+                href="/register"
+                className="bg-green-500 hover:bg-green-600 transition px-5 py-2 rounded-xl font-semibold"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={() => signOut()}
+              className="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-xl font-semibold"
+            >
+              Logout
+            </button>
+          )}
 
         </div>
 
@@ -101,25 +116,39 @@ export default function Navbar() {
             Dashboard
           </Link>
 
-          <Link
-            href="/login"
-            onClick={() =>
-              setMenuOpen(false)
-            }
-            className="hover:text-green-400 transition"
-          >
-            Login
-          </Link>
+          {!session ? (
+            <>
+              <Link
+                href="/login"
+                onClick={() =>
+                  setMenuOpen(false)
+                }
+                className="hover:text-green-400 transition"
+              >
+                Login
+              </Link>
 
-          <Link
-            href="/register"
-            onClick={() =>
-              setMenuOpen(false)
-            }
-            className="bg-green-500 hover:bg-green-600 transition px-5 py-2 rounded-xl font-semibold text-center"
-          >
-            Register
-          </Link>
+              <Link
+                href="/register"
+                onClick={() =>
+                  setMenuOpen(false)
+                }
+                className="bg-green-500 hover:bg-green-600 transition px-5 py-2 rounded-xl font-semibold text-center"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                signOut();
+              }}
+              className="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-xl font-semibold"
+            >
+              Logout
+            </button>
+          )}
 
         </div>
 
