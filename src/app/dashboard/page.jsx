@@ -176,14 +176,13 @@ export default function Dashboard() {
 
     <main className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white px-4 py-6 md:px-12 md:py-10">
       <Navbar />
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 backdrop-blur-xl">
+<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 py-6 backdrop-blur-xl">
 
         {/* HEADER */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-              Expense Dashboard
+             Track Your Spending
             </h1>
             <p className="text-gray-400 text-sm mt-1">
               Track expenses, analyze spending, and improve your financial habits.
