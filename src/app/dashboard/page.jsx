@@ -106,7 +106,7 @@ export default function Dashboard() {
 
       alert("Delete failed");
 
-    }
+    } 
   };
 
   // EDIT
